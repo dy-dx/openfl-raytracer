@@ -18,6 +18,10 @@ class Main extends Sprite {
   public function new () {
     super();
 
+    var scene = new Scene3D();
+    var sphere = new Sphere();
+    scene.add(sphere);
+
     bitmapData = new BitmapData(outputWidth, outputHeight, false, 0x444444);
     renderer = new Renderer(bitmapData);
     bitmap = new Bitmap(renderer.render());
