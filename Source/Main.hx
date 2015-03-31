@@ -1,19 +1,29 @@
 package;
 
-
 import openfl.display.Sprite;
-
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
 
 class Main extends Sprite {
-	
-	
-	public function new () {
-		
-		super ();
-		
-		
-		
-	}
-	
-	
+
+  var bitmap : Bitmap;
+  var bitmapData : BitmapData;
+
+  var renderer : Renderer;
+
+  var outputWidth:Int = 800;
+  var outputHeight:Int = 600;
+
+
+  public function new () {
+    super();
+
+    bitmapData = new BitmapData(outputWidth, outputHeight, false, 0x444444);
+    renderer = new Renderer(bitmapData);
+    bitmap = new Bitmap(renderer.render());
+
+    addChild(bitmap);
+  }
+
+
 }
