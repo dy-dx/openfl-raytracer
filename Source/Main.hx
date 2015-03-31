@@ -20,11 +20,12 @@ class Main extends Sprite {
 
     var scene = new Scene3D();
     var sphere = new Sphere();
+    sphere.radius = 100;
     scene.add(sphere);
 
     bitmapData = new BitmapData(outputWidth, outputHeight, false, 0x444444);
     renderer = new Renderer(bitmapData);
-    bitmap = new Bitmap(renderer.render());
+    bitmap = new Bitmap(renderer.render(scene));
 
     addChild(bitmap);
   }
