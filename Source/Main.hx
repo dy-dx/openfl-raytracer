@@ -21,6 +21,7 @@ class Main extends Sprite {
     var scene = new Scene3D();
     var sphere = new Sphere();
     sphere.radius = 100;
+    sphere.color = 0x0000FF;
     scene.add(sphere);
 
     bitmapData = new BitmapData(outputWidth, outputHeight, false, 0x444444);

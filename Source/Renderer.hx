@@ -8,8 +8,12 @@ class Renderer {
 
   public var buffer : BitmapData;
 
+  var eye : Vector3D;
+
   public function new (bitmapData:BitmapData) {
     this.buffer = bitmapData;
+
+    this.eye = new Vector3D(0, 0, 400);
   }
 
 
@@ -49,15 +53,12 @@ class Renderer {
 
 
   function computePrimaryRay(x:Int, y:Int) : Ray {
-    var eye = new Vector3D(0, 0, -800);
-    var ray = new Ray(x, y, 0);
-    ray.subtract(eye);
-    return ray;
+    return new Ray(eye, x, y, 0);
   }
 
   function intersect(object:Object3D, primaryRay:Ray) : Bool {
     // todo
-    return true;
+    return object.intersect(primaryRay);
   }
 
 }

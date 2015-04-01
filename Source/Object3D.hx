@@ -1,17 +1,20 @@
 package;
 
+import openfl.geom.Vector3D;
+
 class Object3D {
 
   public var color : Int;
-  public var position : {
-    x : Float,
-    y : Float,
-    z : Float
-  };
+  public var position : Vector3D;
 
   public function new () {
     color = 0x0;
-    position = {x: 0, y: 0, z: 0};
+    position = new Vector3D(0, 0, 0);
+  }
+
+  public function intersect (ray:Ray) : Bool {
+    throw "blah";
+    return false;
   }
 
 
