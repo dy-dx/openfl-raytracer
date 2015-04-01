@@ -82,6 +82,9 @@ class Box extends Object3D {
     }
     if (t1z < tmax) { tmax = t1z; }
 
+    if (tmin < 0) {
+      return new Intersection(false, ray); // return "false"
+    }
 
     var point = ray.direction.clone();
     point.scaleBy(tmin);

@@ -37,13 +37,13 @@ class Main extends Sprite {
     addChild(bitmap);
 
     // stats
-    addChild(new FPS(10, 10, 0xFFFFFF));
+    // addChild(new FPS(10, 10, 0xFFFFFF));
     stats = new Stats(10, 23, 0xFFFFFF);
     addChild(stats);
 
     // Render loop
     render(); // do an initial render when using a super slow framerate
-    this.addEventListener(Event.ENTER_FRAME, render);
+    // this.addEventListener(Event.ENTER_FRAME, render);
   }
 
   function initScene (scene : Scene3D) : Void {
@@ -75,7 +75,7 @@ class Main extends Sprite {
     scene.add(box2);
 
     // FIXME: use a damn plane
-    var floor = new Box(5000, 1, 5000);
+    var floor = new Box(10000, 1, 5000);
     floor.position.setTo(0, -250, -2000);
     floor.color = 0xFFFFFF;
     scene.add(floor);
