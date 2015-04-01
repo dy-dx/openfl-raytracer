@@ -48,29 +48,29 @@ class Main extends Sprite {
 
   function initScene (scene : Scene3D) : Void {
     scene.ambient = 0.25;
-    scene.lightPos.setTo(-50, 200, 150);
+    scene.lightPos.setTo(-130, 300, 350);
 
-    sphere = new Sphere(100);
+    sphere = new Sphere(90);
     sphere.color = 0x0000FF;
     scene.add(sphere);
 
     var sphere2 = new Sphere(70);
-    sphere2.position.setTo(150, 30, -50);
+    sphere2.position.setTo(130, 30, -50);
     sphere2.color = 0xFF0000;
     scene.add(sphere2);
 
     var sphere3 = new Sphere(120);
-    sphere3.position.setTo(-200, -100, -150);
+    sphere3.position.setTo(-220, -100, -150);
     sphere3.color = 0x00FF00;
     scene.add(sphere3);
 
     var box = new Box(160, 120, 80);
-    box.position.setTo(260, 180, -50);
+    box.position.setTo(240, 180, -50);
     box.color = 0xFF00FF;
     scene.add(box);
 
-    var box2 = new Box(60, 80, 180);
-    box2.position.setTo(200, -170, 50);
+    var box2 = new Box(60, 80, 600);
+    box2.position.setTo(200, -210, -200);
     box2.color = 0x00FFFF;
     scene.add(box2);
 
