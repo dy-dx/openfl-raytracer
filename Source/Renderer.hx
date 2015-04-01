@@ -3,6 +3,7 @@ package;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.geom.Vector3D;
+import openfl.geom.ColorTransform;
 
 class Renderer {
 
@@ -21,44 +22,65 @@ class Renderer {
     var bufferWidth = buffer.width;
     var bufferHeight = buffer.height;
 
+    var lightPos = new Vector3D(-50, 200, 150);
+    var ambient = 0.25;
+
     for (j in 0...bufferHeight) {
       for (i in 0...bufferWidth) {
 
         var x:Int = (i - Math.floor(bufferWidth/2));
         var y:Int = -(j - Math.floor(bufferHeight/2));
 
-        var minDist:Float = Math.POSITIVE_INFINITY;
+        var minDistance:Float = Math.POSITIVE_INFINITY;
         var primaryRay:Ray = computePrimaryRay(x, y);
-        // var pHit:Point3D;
-        // var nHit:Normal;
         var closestObject:Object3D = null;
+        var pHit:Vector3D = null;
+        var nHit:Vector3D = null;
 
         for (object in scene.objects) {
-          if (intersect(object, primaryRay)) {
-            // todo: compare distance with other intersected objects
+          var hit:Intersection = object.intersect(primaryRay);
+          if (hit.hit && minDistance > hit.distance()) {
             closestObject = object;
+            minDistance = hit.distance();
+            pHit = hit.point;
+            nHit = hit.normal;
           }
         }
 
         if (closestObject != null) {
-          buffer.setPixel(i, j, closestObject.color);
+          var lightDir = lightPos.subtract(pHit);
+          lightDir.normalize();
+          var brightness = Math.max(0, lightDir.dotProduct(nHit));
+          var color = shading(closestObject.color, brightness, ambient);
+          buffer.setPixel(i, j, color);
         }
 
       }
     }
 
-
     return buffer;
+  }
+
+  function shading (color:Int, brightness:Float, ambient:Float) : Int {
+    var r = (color >> 16) & 0xFF;
+    var g = (color >> 8) & 0xFF;
+    var b = color & 0xFF;
+    var rgb = new Vector3D(r, g, b);
+    rgb.scaleBy(brightness);
+    rgb.x += ambient*r;
+    rgb.y += ambient*g;
+    rgb.z += ambient*b;
+    r = Math.floor(Math.min(255, rgb.x));
+    g = Math.floor(Math.min(255, rgb.y));
+    b = Math.floor(Math.min(255, rgb.z));
+
+    var hexcolor = (r << 16) + (g << 8) + b;
+    return hexcolor;
   }
 
 
   function computePrimaryRay(x:Int, y:Int) : Ray {
     return new Ray(eye, x, y, 0);
-  }
-
-  function intersect(object:Object3D, primaryRay:Ray) : Bool {
-    // todo
-    return object.intersect(primaryRay);
   }
 
 }

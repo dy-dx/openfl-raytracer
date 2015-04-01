@@ -13,32 +13,34 @@ class Sphere extends Object3D {
 
   // http://www.scratchapixel.com/old/lessons/3d-basic-lessons/lesson-7-intersecting-simple-shapes/ray-sphere-intersection/
 
-  override public function intersect (ray:Ray) : Bool {
+  override public function intersect (ray:Ray) : Intersection {
 
-    // solutions for t if the ray intersects
-    var t0:Ray, t1:Ray;
-
-
-    // origin of ray
-    var o = ray.origin;
-    // direction of ray
-    var r = ray.clone();
-    r.normalize();
     // origin to center of sphere
-    var L = position.subtract(o);
+    var L = position.subtract(ray.origin);
 
-    var tca = L.dotProduct(r);
+    var tca = L.dotProduct(ray.direction);
 
     if (tca < 0) {
-      return false;
+      return new Intersection(false, ray);
     }
 
-    var d = Math.sqrt( L.dotProduct(L) - tca*tca );
+    var d = Math.sqrt( L.lengthSquared - tca*tca );
 
     if (d > radius) {
-      return false;
+      return new Intersection(false, ray);
     }
 
-    return true;
+    var thc = Math.sqrt(radius*radius - d*d);
+    var hitDistance = Math.min(tca - thc, tca + thc);
+
+    var point = ray.direction.clone();
+    point.scaleBy(hitDistance);
+    point = point.add(ray.origin);
+
+    var normal = point.subtract(position);
+    normal.normalize();
+
+    var i = new Intersection(true, ray, point, normal);
+    return i;
   }
 }

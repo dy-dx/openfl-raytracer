@@ -12,9 +12,9 @@ class Object3D {
     position = new Vector3D(0, 0, 0);
   }
 
-  public function intersect (ray:Ray) : Bool {
+  public function intersect (ray:Ray) : Intersection {
     throw "blah";
-    return false;
+    return new Intersection(false, ray);
   }
 
 
