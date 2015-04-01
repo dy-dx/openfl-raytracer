@@ -21,7 +21,7 @@ class Renderer {
   }
 
 
-  public function render (scene:Scene3D) : BitmapData {
+  public function render (scene:Scene3D) : Void {
     buffer.lock();
     clearBuffer();
 
@@ -59,8 +59,6 @@ class Renderer {
     }
 
     buffer.unlock();
-
-    return buffer;
   }
 
   function shading (color:Int, brightness:Float, ambient:Float) : Int {

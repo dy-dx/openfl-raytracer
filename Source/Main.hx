@@ -4,11 +4,7 @@ import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.events.Event;
-import openfl.text.TextField;
-import openfl.text.TextFormat;
-import openfl.text.TextFieldAutoSize;
 import openfl.display.FPS;
-import openfl.system.System;
 
 class Main extends Sprite {
 
@@ -21,10 +17,10 @@ class Main extends Sprite {
   var outputHeight:Int = 600;
 
   // stats
-  var stats : TextField;
+  var stats : Stats;
 
   var scene : Scene3D;
-  var time : Float = Date.now().getTime();
+  var time : Float;
   var sphere : Sphere;
 
   public function new () {
@@ -33,6 +29,24 @@ class Main extends Sprite {
     this.stage.frameRate = 0.2;
 
     scene = new Scene3D();
+    initScene(scene);
+
+    bitmapData = new BitmapData(outputWidth, outputHeight, false, 0x0);
+    renderer = new Renderer(bitmapData);
+    bitmap = new Bitmap(bitmapData);
+    addChild(bitmap);
+
+    // stats
+    addChild(new FPS(10, 10, 0xFFFFFF));
+    stats = new Stats(10, 23, 0xFFFFFF);
+    addChild(stats);
+
+    // Render loop
+    render(); // do an initial render when using a super slow framerate
+    this.addEventListener(Event.ENTER_FRAME, render);
+  }
+
+  function initScene (scene : Scene3D) : Void {
     scene.ambient = 0.25;
     scene.lightPos.setTo(-50, 200, 150);
 
@@ -59,43 +73,20 @@ class Main extends Sprite {
     box2.position.setTo(200, -180, 0);
     box2.color = 0x00FFFF;
     scene.add(box2);
-
-    bitmapData = new BitmapData(outputWidth, outputHeight, false, 0x0);
-    renderer = new Renderer(bitmapData);
-    bitmap = new Bitmap(bitmapData);
-    addChild(bitmap);
-
-    // stats
-    addChild(new FPS(10, 10, 0xffffff));
-    stats = statsDisplay(10, 22, 0xFFFFFF);
-    addChild(stats);
-
-    // Render loop
-    render(); // do an initial render when using a super slow framerate
-    this.addEventListener(Event.ENTER_FRAME, render);
   }
 
-  function statsDisplay (x:Float, y:Float, color:Int=0x0) : TextField {
-    var t = new TextField();
-    t.x = x;
-    t.y = y;
-    t.selectable = false;
-    t.defaultTextFormat = new TextFormat("_sans", 12, color);
-    t.autoSize = TextFieldAutoSize.LEFT;
-    return t;
+  function updateScene (time : Float) : Void {
+    sphere.position.x = Math.sin(time/1000) * 20;
+    sphere.position.y = Math.cos(time/1000) * 20;
   }
-
 
   private function render (?e:Event) : Void {
     time = Date.now().getTime();
-    sphere.position.x = Math.sin(time/1000) * 20;
-    sphere.position.y = Math.cos(time/1000) * 20;
-    bitmap.bitmapData = renderer.render(scene);
-    var t1 = Date.now().getTime();
+    updateScene(time);
+    renderer.render(scene);
 
-    stats.text = "Framerate set to " + stage.frameRate;
-    stats.text += "\nRender time: " + (t1 - time);
-    stats.text += "\nMem: " + Math.round(System.totalMemory / 1024 / 1024 * 100)/100;
+    var renderTime = Date.now().getTime() - time;
+    stats.update(stage.frameRate, renderTime);
   }
 
 
