@@ -25,7 +25,7 @@ class Main extends Sprite {
 
     var sphere2 = new Sphere(70);
     sphere2.position.setTo(150, 30, -50);
-    sphere2.color = 0x0000FF;
+    sphere2.color = 0xFF0000;
     scene.add(sphere2);
 
     var sphere3 = new Sphere(120);
