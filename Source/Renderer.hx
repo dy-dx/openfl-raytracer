@@ -10,20 +10,20 @@ class Renderer {
   public var buffer : BitmapData;
 
   var eye : Vector3D;
+  var bufferWidth : Int;
+  var bufferHeight : Int;
 
   public function new (bitmapData:BitmapData) {
     this.buffer = bitmapData;
-
-    this.eye = new Vector3D(0, 0, 400);
+    this.bufferWidth = buffer.width;
+    this.bufferHeight = buffer.height;
+    this.eye = new Vector3D(0, 0, bitmapData.width/2);
   }
 
 
   public function render (scene:Scene3D) : BitmapData {
-    var bufferWidth = buffer.width;
-    var bufferHeight = buffer.height;
-
-    var lightPos = new Vector3D(-50, 200, 150);
-    var ambient = 0.25;
+    buffer.lock();
+    clearBuffer();
 
     for (j in 0...bufferHeight) {
       for (i in 0...bufferWidth) {
@@ -48,15 +48,17 @@ class Renderer {
         }
 
         if (closestObject != null) {
-          var lightDir = lightPos.subtract(pHit);
+          var lightDir = scene.lightPos.subtract(pHit);
           lightDir.normalize();
           var brightness = Math.max(0, lightDir.dotProduct(nHit));
-          var color = shading(closestObject.color, brightness, ambient);
+          var color = shading(closestObject.color, brightness, scene.ambient);
           buffer.setPixel(i, j, color);
         }
 
       }
     }
+
+    buffer.unlock();
 
     return buffer;
   }
@@ -81,6 +83,10 @@ class Renderer {
 
   function computePrimaryRay(x:Int, y:Int) : Ray {
     return new Ray(eye, x, y, 0);
+  }
+
+  function clearBuffer (color:Int = 0) : Void {
+    buffer.fillRect(buffer.rect, color);
   }
 
 }
