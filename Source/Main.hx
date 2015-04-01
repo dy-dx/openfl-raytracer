@@ -70,9 +70,15 @@ class Main extends Sprite {
     scene.add(box);
 
     var box2 = new Box(60, 80, 180);
-    box2.position.setTo(200, -180, 0);
+    box2.position.setTo(200, -170, 50);
     box2.color = 0x00FFFF;
     scene.add(box2);
+
+    // FIXME: use a damn plane
+    var floor = new Box(5000, 1, 5000);
+    floor.position.setTo(0, -250, -2000);
+    floor.color = 0xFFFFFF;
+    scene.add(floor);
   }
 
   function updateScene (time : Float) : Void {
