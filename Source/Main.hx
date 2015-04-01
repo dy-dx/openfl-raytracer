@@ -34,9 +34,14 @@ class Main extends Sprite {
     scene.add(sphere3);
 
     var box = new Box(160, 120, 80);
-    box.position.setTo(150, -180, 0);
+    box.position.setTo(260, 180, -50);
     box.color = 0xFF00FF;
     scene.add(box);
+
+    var box2 = new Box(60, 80, 180);
+    box2.position.setTo(200, -180, 0);
+    box2.color = 0x00FFFF;
+    scene.add(box2);
 
     bitmapData = new BitmapData(outputWidth, outputHeight, false, 0x0);
     renderer = new Renderer(bitmapData);
