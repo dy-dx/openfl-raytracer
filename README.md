@@ -2,8 +2,7 @@
 
 A WIP raytracer in Haxe/OpenFL.
 
-http://dy-dx.github.io/openfl-raytracer/html5
-http://dy-dx.github.io/openfl-raytracer/flash
+Demo: http://dy-dx.github.io/openfl-raytracer/
 
 
 ## License
